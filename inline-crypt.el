@@ -1,7 +1,10 @@
-;;; inline-crypt.el -- Simple inline encryption for emacs
+;;; inline-crypt.el --- Simple inline encryption via openssl
+;; Author: Daniel Ralston <Wubbulous@gmail.com>
+;; Version: 0.1
+;; Url: https://github.com/Sodel-the-Vociferous/inline-crypt-el
+;; Keywords: crypt
 
 ;; Copyright (C) 2013, Daniel Ralston <Wubbulous@gmail.com>
-;; Keywords: crypt
 
 ;; This file is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License Version 2 as
