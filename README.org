@@ -1,9 +1,10 @@
 * inline-crypt.el
 /Simple inline AES encryption for emacs/
 
-I wanted to be able to encrypt just *parts* of files, with AES, for
-instance, instead of GnuPG. So, voila! Simple inline encryption for
-Emacs via OpenSSL.
+I wanted to be able to have AES-encrypted data inline with other text
+in otherwise unencrypted files, and to have both encrypted and
+unencrypted data in the same line. So, voila!  Simple inline
+encryption for Emacs via OpenSSL.
 
 I don't mean to suggest that this code is complete, elegant, or even
 "good enough" for you. But, it does exactly what I need. Maybe it'll
