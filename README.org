@@ -1,8 +1,7 @@
-openssl-crypt -- Simple inline encryption for emacs via OpenSSL
+openssl-crypt -- Simple inline encryption for Emacs via OpenSSL
 
-I wanted to be able to encrypt just *parts* of files, and read them
-without having to use GPG. So, voila! Symmetric encryption for emacs,
-via openssl.
+I wanted to be able to encrypt just *parts* of files with AES, for
+instance, instead of GnuPG. So, voila!
 
 Why? For a long time, I used KeepassX to store my mountains of
 passwords, so I don't have to click the Link of Shame ("I forgot my
@@ -13,3 +12,7 @@ convenient. (Automatic merging? Delicious.)
 
 So, instead of KeepassX, I now store all my passwords in an org file,
 and use this code to only encrypt the sensitive bits.
+
+I've only tested this in Emacs 24. It's hopefully obvious that you
+also need to have the openssl command-line utility installed for this
+to work.
