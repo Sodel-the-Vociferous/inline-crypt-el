@@ -176,3 +176,5 @@ buffer."
         (insert result)
       (with-output-to-temp-buffer "*openssl-crypt decrypted data*"
         (princ result)))))
+
+(provide 'openssl-crypt)
