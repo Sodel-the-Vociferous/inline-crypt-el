@@ -45,7 +45,7 @@ also be followed by a newline, to make openssl happy."
   "Replace the given region with the result of encrypting or or
 decrypting it.
 
-The ACTION arg must either be the symbol ENCRYPT, or the symbol
+The ACTION arg must either be the symbol ENCRYPT or the symbol
 DECRYPT.
 
 The first line of the region will be used as the encryption
@@ -59,8 +59,8 @@ you like it when software refuses to work properly."
     (apply 'call-process-region
            start end
            openssl-crypt-command
-           t ; Replace the input region
-           t ; Process output goes in the current buffer
+           t ; Delete the input region
+           t ; Output goes in the current buffer
            nil ; Don't display the output incrementally
            openssl-crypt-cipher
            (if (eq action 'decrypt)
@@ -71,9 +71,8 @@ you like it when software refuses to work properly."
 (defun openssl-crypt (action pass text)
   "Encrypt or decrypt a string of text with a password.
 
-The ACTION arg must either be the symbol ENCRYPT, or the symbol
-DECRYPT.
-"
+The ACTION arg must either be the symbol ENCRYPT or the symbol
+DECRYPT."
 
   (unless (member action '(encrypt decrypt))
     (error "ACTION must either be ENCRYPT or DECRYPT"))
@@ -81,7 +80,8 @@ DECRYPT.
     (with-temp-buffer
       ;; Fill temporary buffer with the input for openssl.
       (openssl-crypt-setup-input pass text)
-      ;; Replace
+      ;; Replace the input in the temp buffer with the encrypted
+      ;; output.
       (openssl-crypt-in-input-region action
                                      (point-min)
                                      (point-max))
@@ -92,11 +92,11 @@ DECRYPT.
   "Return the result of encrypting or decrypting the given region
 as a string.
 
-The ACTION arg must either be the symbol ENCRYPT, or the symbol
+The ACTION arg must either be the symbol ENCRYPT or the symbol
 DECRYPT.
 
-If replace-p is given and is non-nil, also replace the input
-region with its encrypted/decrypted result."
+If REPLACE-P is non-nil, also replace the input region with its
+encrypted/decrypted result."
 
   (let* ((text (buffer-substring start end))
          (result (openssl-crypt action pass text)))
@@ -111,8 +111,9 @@ region with its encrypted/decrypted result."
 (defun openssl-crypt-encrypt-region (start end replace-p)
   "Prompt for a password, and encrypt the given region.
 
-If the universal prefix arg is given, replace the region with the
-encrypted data; otherwise display it in a temporary buffer."
+If the universal prefix arg is given, or REPLACE-P is non-nil,
+replace the region with the encrypted data; otherwise display it
+in a temporary buffer."
 
   (interactive "d\nm\nP")
   (unless (region-active-p)
@@ -128,8 +129,9 @@ encrypted data; otherwise display it in a temporary buffer."
 (defun openssl-crypt-decrypt-region (start end replace-p)
   "Prompt for a password, and decrypt the given region.
 
-If the universal prefix arg is given, replace the region with the
-decrypted data; otherwise, display it in a temporary buffer."
+If the universal prefix arg is given, or REPLACE-P is non-nil,
+replace the region with the decrypted data; otherwise, display it
+in a temporary buffer."
 
   (interactive "m\nd\nP")
   (unless (region-active-p)
@@ -145,9 +147,9 @@ decrypted data; otherwise, display it in a temporary buffer."
 (defun openssl-crypt-encrypt-string (insert-p)
   "Prompt for a password and a string, and encrypt the string.
 
-If the universal prefix arg is given, insert the encrypted data
-into the current buffer; otherwise, display it in a temporary
-buffer."
+If the universal prefix arg is given, or INSERT-P is non-nil,
+insert the encrypted data into the current buffer; otherwise,
+display it in a temporary buffer."
 
   (interactive "P")
   (let* ((pass (read-passwd "Password: " t))
@@ -163,9 +165,9 @@ buffer."
 (defun openssl-crypt-decrypt-string (insert-p)
   "Prompt for a password and a string, and decrypt the string.
 
-If the universal prefix arg is given, insert the decrypted data
-into the current buffer; otherwise, display it in a temporary
-buffer."
+If the universal prefix arg is given, or INSERT-P is non-nil,
+insert the decrypted data into the current buffer; otherwise,
+display it in a temporary buffer."
 
   (interactive "P")
   (let* ((pass (read-passwd "Password: "))
