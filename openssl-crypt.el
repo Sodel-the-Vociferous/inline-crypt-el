@@ -67,7 +67,9 @@ you like it when software refuses to work properly."
            (if (eq action 'decrypt)
                ;; Add the -d option, to decrypt
                (cons "-d" openssl-crypt-args)
-             openssl-crypt-args))))
+             openssl-crypt-args))
+    ;; Remove the final newline, which was added by openssl
+    (backward-delete-char 1)))
 
 (defun openssl-crypt (action pass text)
   "Encrypt or decrypt a string of text with a password.
