@@ -15,6 +15,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this file.  If not, see <http://www.gnu.org/licenses/>.
 
+(provide 'openssl-crypt)
 
 (defconst openssl-crypt-args
   '("-a" ; Use base64 encoding
@@ -178,5 +179,3 @@ display it in a temporary buffer."
         (insert result)
       (with-output-to-temp-buffer "*openssl-crypt decrypted data*"
         (princ result)))))
-
-(provide 'openssl-crypt)
