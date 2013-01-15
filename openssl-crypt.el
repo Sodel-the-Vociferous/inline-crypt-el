@@ -111,17 +111,18 @@ encrypted/decrypted result."
 
 ;;; Interactive Commands
 
-(defun openssl-crypt-encrypt-region (start end replace-p)
+(defun openssl-crypt-encrypt-region (start end pass
+                                           &optional replace-p)
   "Prompt for a password, and encrypt the given region.
 
 If the universal prefix arg is given, or REPLACE-P is non-nil,
 replace the region with the encrypted data; otherwise display it
 in a temporary buffer."
 
-  (interactive "d\nm\nP")
+  (interactive "d\nm\ni\nP")
   (unless (region-active-p)
     (error "Region not active"))
-  (let* ((pass (read-passwd "Password: " t))
+  (let* ((pass (or pass (read-passwd "Password: " t)))
          (result (openssl-crypt-region 'encrypt start end
                                        pass replace-p)))
     (clear-string pass)
@@ -129,17 +130,18 @@ in a temporary buffer."
       (with-output-to-temp-buffer "*openssl-crypt encrypted data*"
         (princ result)))))
 
-(defun openssl-crypt-decrypt-region (start end replace-p)
+(defun openssl-crypt-decrypt-region (start end pass
+                                           &optional replace-p)
   "Prompt for a password, and decrypt the given region.
 
 If the universal prefix arg is given, or REPLACE-P is non-nil,
 replace the region with the decrypted data; otherwise, display it
 in a temporary buffer."
 
-  (interactive "m\nd\nP")
+  (interactive "m\nd\ni\nP")
   (unless (region-active-p)
     (error "Region not active"))
-  (let* ((pass (read-passwd "Password: "))
+  (let* ((pass (or pass (read-passwd "Password: ")))
          (result (openssl-crypt-region 'decrypt start end
                                        pass replace-p)))
     (clear-string pass)
