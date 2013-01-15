@@ -35,7 +35,7 @@ buffer before the point, for input into openssl.
 
 The password must be all by itself on the first line, so it is
 followed by a newline. The main text body comes next, and must
-also be followed by a newline, to make openssl happy."
+also end with a newline, to make openssl happy."
 
   (insert pass)
   (newline)
@@ -46,8 +46,7 @@ also be followed by a newline, to make openssl happy."
   "Replace the given region with the result of encrypting or or
 decrypting it.
 
-The ACTION arg must either be the symbol ENCRYPT or the symbol
-DECRYPT.
+ACTION must either be the symbol ENCRYPT or the symbol DECRYPT.
 
 The first line of the region will be used as the encryption
 key. All following lines of the region will be the main text
@@ -74,8 +73,7 @@ you like it when software refuses to work properly."
 (defun openssl-crypt (action pass text)
   "Encrypt or decrypt a string of text with a password.
 
-The ACTION arg must either be the symbol ENCRYPT or the symbol
-DECRYPT."
+ACTION must either be the symbol ENCRYPT or the symbol DECRYPT."
 
   (unless (member action '(encrypt decrypt))
     (error "ACTION must either be ENCRYPT or DECRYPT"))
@@ -92,14 +90,12 @@ DECRYPT."
 
 (defun openssl-crypt-region (action start end pass
                                     &optional replace-p)
-  "Return the result of encrypting or decrypting the given region
+  "Return the result of encrypting or decrypting the given region,
 as a string.
 
-The ACTION arg must either be the symbol ENCRYPT or the symbol
-DECRYPT.
-
-If REPLACE-P is non-nil, also replace the input region with its
-encrypted/decrypted result."
+ACTION must either be the symbol ENCRYPT or the symbol
+DECRYPT. If REPLACE-P is non-nil, also replace the input region
+with its encrypted/decrypted result."
 
   (let* ((text (buffer-substring start end))
          (result (openssl-crypt action pass text)))
