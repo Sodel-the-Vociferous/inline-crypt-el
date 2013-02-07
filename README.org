@@ -8,6 +8,14 @@ acceptable. But, it does exactly what I need it to.
 
 (I used openssl instead of aes.el because reasons.)
 
+** Installation
+
+I've only tested this in Emacs 24, on a *Nix system. You will also
+need to have the openssl command-line utility installed.
+
+If openssl isn't in your path, customize the
+`inline-crypt-openssl-command' variable.
+
 ** Use
 There are four main interactive commands that encrypt and decrypt
 text. Each of these commands will prompt you for the encryption
@@ -45,7 +53,3 @@ convenient. (Automatic merging? Delicious.)
 So, instead of KeepassX, I now store all my passwords in an org file,
 and use this code to only encrypt the sensitive bits.\
 
-** Compatibility
-I've only tested this in Emacs 24. It's hopefully obvious that you
-also need to have the openssl command-line utility installed for this
-to work.
