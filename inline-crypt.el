@@ -1,4 +1,4 @@
-;;; openssl-crypt.el -- Simple inline encryption via OpenSSL
+;;; inline-crypt.el -- Simple inline encryption for emacs
 
 ;; Copyright (C) 2013, Daniel Ralston <Wubbulous@gmail.com>
 ;; Keywords: crypt
@@ -15,21 +15,21 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this file.  If not, see <http://www.gnu.org/licenses/>.
 
-(provide 'openssl-crypt)
+(provide 'inline-crypt)
 
-(defconst openssl-crypt-args
+(defconst inline-crypt-openssl-args
   '("-a" ; Use base64 encoding
     "-salt" ; Salt, for flavour and security
     "-pass" "stdin")) ; Use the first line of stdin as the password
 
-(defcustom openssl-crypt-command "openssl"
+(defcustom inline-crypt-openssl-command "openssl"
   "The base openssl command to run when encrypting or decrypting.")
 
-(defcustom openssl-crypt-cipher "aes-256-cbc"
+(defcustom inline-crypt-cipher "aes-256-cbc"
   "The default cipher to use when encrypting or decrypting.")
 
 
-(defun openssl-crypt-setup-input (pass text)
+(defun inline-crypt-setup-openssl-input (pass text)
   "Insert the password and main text body into the current
 buffer before the point, for input into openssl.
 
@@ -42,7 +42,7 @@ also end with a newline, to make openssl happy."
   (insert text)
   (newline))
 
-(defun openssl-crypt-in-input-region (action start end)
+(defun inline-crypt-replacing-input-region (action start end)
   "Replace the given region with the result of encrypting or or
 decrypting it.
 
@@ -58,19 +58,19 @@ you like it when software refuses to work properly."
   (save-excursion
     (apply 'call-process-region
            start end
-           openssl-crypt-command
+           inline-crypt-openssl-command
            t ; Delete the input region
            t ; Output goes in the current buffer
            nil ; Don't display the output incrementally
-           openssl-crypt-cipher
+           inline-crypt-cipher
            (if (eq action 'decrypt)
                ;; Add the -d option, to decrypt
-               (cons "-d" openssl-crypt-args)
-             openssl-crypt-args))
+               (cons "-d" inline-crypt-openssl-args)
+             inline-crypt-openssl-args))
     ;; Remove the final newline, which was added by openssl
     (backward-delete-char 1)))
 
-(defun openssl-crypt (action pass text)
+(defun inline-crypt (action pass text)
   "Encrypt or decrypt a string of text with a password.
 
 ACTION must either be the symbol ENCRYPT or the symbol DECRYPT."
@@ -80,15 +80,15 @@ ACTION must either be the symbol ENCRYPT or the symbol DECRYPT."
   (save-excursion
     (with-temp-buffer
       ;; Fill temporary buffer with the input for openssl.
-      (openssl-crypt-setup-input pass text)
+      (inline-crypt-setup-openssl-input pass text)
       ;; Replace the input in the temp buffer with the encrypted
       ;; output.
-      (openssl-crypt-in-input-region action
+      (inline-crypt-replacing-input-region action
                                      (point-min)
                                      (point-max))
       (buffer-string))))
 
-(defun openssl-crypt-region (action start end pass
+(defun inline-crypt-region (action start end pass
                                     &optional replace-p)
   "Return the result of encrypting or decrypting the given region,
 as a string.
@@ -98,7 +98,7 @@ DECRYPT. If REPLACE-P is non-nil, also replace the input region
 with its encrypted/decrypted result."
 
   (let* ((text (buffer-substring start end))
-         (result (openssl-crypt action pass text)))
+         (result (inline-crypt action pass text)))
     (when replace-p
       (delete-region start end)
       (insert result))
@@ -107,7 +107,7 @@ with its encrypted/decrypted result."
 
 ;;; Interactive Commands
 
-(defun openssl-crypt-encrypt-region (start end pass
+(defun inline-crypt-encrypt-region (start end pass
                                            &optional replace-p)
   "Prompt for a password, and encrypt the given region.
 
@@ -119,14 +119,14 @@ in a temporary buffer."
   (unless (region-active-p)
     (error "Region not active"))
   (let* ((pass (or pass (read-passwd "Password: " t)))
-         (result (openssl-crypt-region 'encrypt start end
+         (result (inline-crypt-region 'encrypt start end
                                        pass replace-p)))
     (clear-string pass)
     (unless replace-p
-      (with-output-to-temp-buffer "*openssl-crypt encrypted data*"
+      (with-output-to-temp-buffer "*inline-crypt encrypted data*"
         (princ result)))))
 
-(defun openssl-crypt-decrypt-region (start end pass
+(defun inline-crypt-decrypt-region (start end pass
                                            &optional replace-p)
   "Prompt for a password, and decrypt the given region.
 
@@ -138,14 +138,14 @@ in a temporary buffer."
   (unless (region-active-p)
     (error "Region not active"))
   (let* ((pass (or pass (read-passwd "Password: ")))
-         (result (openssl-crypt-region 'decrypt start end
+         (result (inline-crypt-region 'decrypt start end
                                        pass replace-p)))
     (clear-string pass)
     (unless replace-p
-      (with-output-to-temp-buffer "*openssl-crypt decrypted data*"
+      (with-output-to-temp-buffer "*inline-crypt decrypted data*"
         (princ result)))))
 
-(defun openssl-crypt-encrypt-string (insert-p)
+(defun inline-crypt-encrypt-string (insert-p)
   "Prompt for a password and a string, and encrypt the string.
 
 If the universal prefix arg is given, or INSERT-P is non-nil,
@@ -155,15 +155,15 @@ display it in a temporary buffer."
   (interactive "P")
   (let* ((pass (read-passwd "Password: " t))
          (text (read-string "String: "))
-         (result (openssl-crypt 'encrypt pass text)))
+         (result (inline-crypt 'encrypt pass text)))
     (clear-string pass)
     (if insert-p
         (insert result)
       (save-excursion
-        (with-output-to-temp-buffer "*openssl-crypt encrypted data*"
+        (with-output-to-temp-buffer "*inline-crypt encrypted data*"
           (princ result))))))
 
-(defun openssl-crypt-decrypt-string (insert-p)
+(defun inline-crypt-decrypt-string (insert-p)
   "Prompt for a password and a string, and decrypt the string.
 
 If the universal prefix arg is given, or INSERT-P is non-nil,
@@ -173,9 +173,9 @@ display it in a temporary buffer."
   (interactive "P")
   (let* ((pass (read-passwd "Password: "))
          (text (read-string "String: "))
-         (result (openssl-crypt 'decrypt pass text)))
+         (result (inline-crypt 'decrypt pass text)))
     (clear-string pass)
     (if insert-p
         (insert result)
-      (with-output-to-temp-buffer "*openssl-crypt decrypted data*"
+      (with-output-to-temp-buffer "*inline-crypt decrypted data*"
         (princ result)))))
