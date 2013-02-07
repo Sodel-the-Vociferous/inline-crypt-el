@@ -1,20 +1,24 @@
-* inline-crypt
-I wanted to be able to encrypt just *parts* of files with AES, for
+* inline-crypt.el
+/Simple inline AES encryption for emacs/
+
+I wanted to be able to encrypt just *parts* of files, with AES, for
 instance, instead of GnuPG. So, voila! Simple inline encryption for
 Emacs via OpenSSL.
 
 I don't mean to suggest that this code is complete, elegant, or even
-acceptable. But, it does exactly what I need it to.
+"good enough" for you. But, it does exactly what I need. Maybe it'll
+be useful for someone else, too!
 
-(I used openssl instead of aes.el because reasons.)
+And, before you ask, I used openssl instead of aes.el "because
+reasons".
 
 ** Installation
 
 I've only tested this in Emacs 24, on a *Nix system. You will also
 need to have the openssl command-line utility installed.
 
-If openssl isn't in your path, customize the
-`inline-crypt-openssl-command' variable.
+If openssl isn't in your PATH, customize the
+`inline-crypt-openssl-command' variable to point to it.
 
 ** Use
 There are four main interactive commands that encrypt and decrypt
@@ -23,7 +27,7 @@ password. Encrypted data is produced and consumed in base64, not
 binary.
 
 `inline-crypt-encrypt-region' encrypts the current region, and
-display the encrypted output in a temporary buffer. Or, with a prefix
+displays the encrypted output in a temporary buffer. Or, with a prefix
 argument (`C-u'), the region will be replaced with the encrypted
 output.
 
@@ -43,13 +47,13 @@ with a prefix argument (`C-u'), the decrypted output will be inserted
 into the current buffer at the point.
 
 ** Why?
-For a long time, I used KeepassX to store my mountains of
-passwords, so I don't have to click the Link of Shame ("I forgot my
-password") every time I visit a site after more than two weeks away
-from it. KeepassX is great, except it uses a binary database. I keep
-all my stuff under source control, so plain text is a lot more
-convenient. (Automatic merging? Delicious.)
+
+For a long time, I used KeepassX to store my mountains of passwords,
+so I don't have to click the Link of Shame ("I forgot my password")
+every time I spend too much time away from a site. KeepassX is great,
+except it uses a binary database. I keep all my stuff under source
+control, so plain text is a lot more convenient. (Automatic merging?
+Line-by-line diffs? Delicious.)
 
 So, instead of KeepassX, I now store all my passwords in an org file,
-and use this code to only encrypt the sensitive bits.\
-
+and use this code to only encrypt the sensitive bits.
