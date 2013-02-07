@@ -3,11 +3,36 @@ I wanted to be able to encrypt just *parts* of files with AES, for
 instance, instead of GnuPG. So, voila! Simple inline encryption for
 Emacs via OpenSSL.
 
+I don't mean to suggest that this code is complete, elegant, or even
+acceptable. But, it does exactly what I need it to.
+
+(I used openssl instead of aes.el because reasons.)
+
 ** Use
-I've tried to keep the code fairly well documented. The four
-interactive commands that will probably interest you are
-'openssl-crypt-encrypt-region', openssl-crypt-decrypt-region',
-'openssl-crypt-encrypt-string', and 'openssl-crypt-decrypt-string'.
+There are four main interactive commands that encrypt and decrypt
+text. Each of these commands will prompt you for the encryption
+password. Encrypted data is produced and consumed in base64, not
+binary.
+
+`openssl-crypt-encrypt-region' encrypts the current region, and
+display the encrypted output in a temporary buffer. Or, with a prefix
+argument (`C-u'), the region will be replaced with the encrypted
+output.
+
+`openssl-crypt-decrypt-region' decrypts the current region, and
+displays the decrypted output in a temporary buffer. Or, with a prefix
+argument (`C-u'), the region will be replaced with the decrypted
+output.
+
+`openssl-crypt-encrypt-string' prompts the user for a string to
+encode, and displays the encrypted output in a temporary buffer. Or,
+with a prefix argument (`C-u'), the encrypted output will be inserted
+into the current buffer at the point.
+
+`openssl-crypt-decrypt-string' prompts the user for a string to
+encode, and displays the decrypted output in a temporary buffer. Or,
+with a prefix argument (`C-u'), the decrypted output will be inserted
+into the current buffer at the point.
 
 ** Why?
 For a long time, I used KeepassX to store my mountains of
