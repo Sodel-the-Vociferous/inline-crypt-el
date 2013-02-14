@@ -1,17 +1,9 @@
 * inline-crypt.el
-/Simple inline AES encryption for emacs/
+/Simple inline AES encryption via openssl/
 
-I wanted to be able to have AES-encrypted data inline with other text
-in otherwise unencrypted files, and to have both encrypted and
-unencrypted data in the same line. So, voila!  Simple inline
-encryption for Emacs via OpenSSL.
-
-I don't mean to suggest that this code is complete, elegant, or even
-"good enough" for you. But, it does exactly what I need. Maybe it'll
-be useful for someone else, too!
-
-And, before you ask, I used openssl instead of aes.el "because
-reasons".
+This package may be useful if you’d just like to encrypt parts of
+files or buffers, and to have encrypted output in the same line as
+other unencrypted text.
 
 ** Installation
 
@@ -58,3 +50,10 @@ Line-by-line diffs? Delicious.)
 
 So, instead of KeepassX, I now store all my passwords in an org file,
 and use this code to only encrypt the sensitive bits.
+
+I don't mean to suggest that this code is complete, elegant, or even
+"good enough" for you. But, it does exactly what I need. Maybe it'll
+be useful for someone else, too!
+
+And, before you ask, I used openssl instead of aes.el "because
+reasons".
