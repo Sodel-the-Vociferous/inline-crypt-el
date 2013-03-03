@@ -103,12 +103,12 @@ ACTION must either be the symbol ENCRYPT or the symbol DECRYPT."
       ;; Replace the input in the temp buffer with the encrypted
       ;; output.
       (inline-crypt-replacing-input-region action
-                                     (point-min)
-                                     (point-max))
+                                           (point-min)
+                                           (point-max))
       (buffer-string))))
 
 (defun inline-crypt-region (action start end pass
-                                    &optional replace-p)
+                                   &optional replace-p)
   "Return the result of encrypting or decrypting the given region,
 as a string.
 
@@ -127,7 +127,7 @@ with its encrypted/decrypted result."
 ;;; Interactive Commands
 
 (defun inline-crypt-encrypt-region (start end pass
-                                           &optional replace-p)
+                                          &optional replace-p)
   "Prompt for a password, and encrypt the given region.
 
 If the universal prefix arg is given, or REPLACE-P is non-nil,
@@ -139,14 +139,14 @@ in a temporary buffer."
     (error "Region not active"))
   (let* ((pass (or pass (read-passwd "Password: " t)))
          (result (inline-crypt-region 'encrypt start end
-                                       pass replace-p)))
+                                      pass replace-p)))
     (clear-string pass)
     (unless replace-p
       (with-output-to-temp-buffer "*inline-crypt encrypted data*"
         (princ result)))))
 
 (defun inline-crypt-decrypt-region (start end pass
-                                           &optional replace-p)
+                                          &optional replace-p)
   "Prompt for a password, and decrypt the given region.
 
 If the universal prefix arg is given, or REPLACE-P is non-nil,
@@ -158,7 +158,7 @@ in a temporary buffer."
     (error "Region not active"))
   (let* ((pass (or pass (read-passwd "Password: ")))
          (result (inline-crypt-region 'decrypt start end
-                                       pass replace-p)))
+                                      pass replace-p)))
     (clear-string pass)
     (unless replace-p
       (with-output-to-temp-buffer "*inline-crypt decrypted data*"
