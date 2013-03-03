@@ -198,3 +198,5 @@ display it in a temporary buffer."
         (insert result)
       (with-output-to-temp-buffer "*inline-crypt decrypted data*"
         (princ result)))))
+
+;;; inline-crypt.el ends here
