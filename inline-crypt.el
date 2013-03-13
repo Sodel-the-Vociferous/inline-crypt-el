@@ -1,6 +1,6 @@
 ;;; inline-crypt.el --- Simple inline encryption via openssl
 ;;; Author: Daniel Ralston <Wubbulous@gmail.com>
-;;; Version: 0.1.1
+;;; Version: 0.1.2
 ;;; Url: https://github.com/Sodel-the-Vociferous/inline-crypt-el
 ;;; Keywords: crypt
 
