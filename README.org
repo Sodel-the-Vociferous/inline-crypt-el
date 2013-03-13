@@ -39,6 +39,16 @@ encode, and displays the decrypted output in a temporary buffer. Or,
 with a prefix argument (`C-u'), the decrypted output will be inserted
 into the current buffer at the point.
 
+** Example
+Select the following encrypted text, type
+`C-u M-x inline-crypt-decrypt-region', and enter `foo' when emacs asks
+for the password: U2FsdGVkX1+8grfWtdmnEGwqhO7dpp1tBcJripWTye6odJ3PdHv147cwgKcXTvs+
+iQMNULG/qYfZ8BENVmWlSytsQRQhUS76vYXRBX0AajmhBCyDQCUXWixYhfJIgjbu
+vAIhOBkvAaZOGGP3XTb4OAyccMsqhYmxs5wd1GCWp5v9VOJPwl3C/leKz+pXN6Y9
+N30TJEB8rB6YVAduBJ/RhJPhO1VwDdY1ql1al7VegKDmFgmGB9xbg65elseOei+8
+6AoFcGYIxVDiUjpr7CrMYUOaT32AVJEoij576lvaTW9v7PPmiv1LHY7Te28TFRyQ
+fmT8CpGGcHhQmFl3jtbSag==
+
 ** Why?
 
 For a long time, I used KeepassX to store my mountains of passwords,
