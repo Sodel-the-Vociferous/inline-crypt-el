@@ -1,6 +1,6 @@
 ;;; inline-crypt.el --- Simple inline encryption via openssl
 ;;; Author: Daniel Ralston <Wubbulous@gmail.com>
-;;; Version: 0.1.2
+;;; Version: 0.1.3
 ;;; Url: https://github.com/Sodel-the-Vociferous/inline-crypt-el
 ;;; Keywords: crypt
 
@@ -137,7 +137,7 @@ in a temporary buffer."
   (interactive "d\nm\ni\nP")
   (unless (region-active-p)
     (error "Region not active"))
-  (let* ((pass (or pass (read-passwd "Password: " t)))
+  (let* ((pass (or pass (read-passwd "Encryption Password: " t)))
          (result (inline-crypt-region 'encrypt start end
                                       pass replace-p)))
     (clear-string pass)
@@ -156,7 +156,7 @@ in a temporary buffer."
   (interactive "m\nd\ni\nP")
   (unless (region-active-p)
     (error "Region not active"))
-  (let* ((pass (or pass (read-passwd "Password: ")))
+  (let* ((pass (or pass (read-passwd "Decryption Password: ")))
          (result (inline-crypt-region 'decrypt start end
                                       pass replace-p)))
     (clear-string pass)
@@ -172,8 +172,8 @@ insert the encrypted data into the current buffer; otherwise,
 display it in a temporary buffer."
 
   (interactive "P")
-  (let* ((pass (read-passwd "Password: " t))
-         (text (read-string "String: "))
+  (let* ((pass (read-passwd "Encryption Password: " t))
+         (text (read-string "String to Encrypt: "))
          (result (inline-crypt 'encrypt pass text)))
     (clear-string pass)
     (if insert-p
@@ -190,8 +190,8 @@ insert the decrypted data into the current buffer; otherwise,
 display it in a temporary buffer."
 
   (interactive "P")
-  (let* ((pass (read-passwd "Password: "))
-         (text (read-string "String: "))
+  (let* ((pass (read-passwd "Decryption Password: "))
+         (text (read-string "String to Decrypt: "))
          (result (inline-crypt 'decrypt pass text)))
     (clear-string pass)
     (if insert-p
