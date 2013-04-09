@@ -1,6 +1,6 @@
 ;;; inline-crypt.el --- Simple inline encryption via openssl
 ;;; Author: Daniel Ralston <Wubbulous@gmail.com>
-;;; Version: 0.1.3
+;;; Version: 0.1.4
 ;;; Url: https://github.com/Sodel-the-Vociferous/inline-crypt-el
 ;;; Keywords: crypt
 
@@ -198,5 +198,29 @@ display it in a temporary buffer."
         (insert result)
       (with-output-to-temp-buffer "*inline-crypt decrypted data*"
         (princ result)))))
+
+;;; Create a submenu under Tools.
+;; Moulph. This is uuuugly.
+
+(easy-menu-add-item
+ global-map '("menu-bar" "tools")
+ (easy-menu-create-menu
+  "inline-crypt"
+  `(["Decrypt Region" inline-crypt-decrypt-region]
+    ["Decrypt and Replace Region"
+     ;; A function to simulate interactively passing the prefix arg to
+     ;; the proper function.
+     ,(lambda ()
+        (interactive)
+        (let ((current-prefix-arg t))
+          (call-interactively 'inline-crypt-decrypt-region)))]
+    ["Encrypt Region" inline-crypt-encrypt-region]
+    ["Encrypt and Replace Region"
+     ;; A function to simulate interactively passing the prefix arg to
+     ;; the proper function.
+     ,(lambda ()
+        (interactive)
+        (let ((current-prefix-arg t))
+          (call-interactively 'inline-crypt-encrypt-region)))])))
 
 ;;; inline-crypt.el ends here
