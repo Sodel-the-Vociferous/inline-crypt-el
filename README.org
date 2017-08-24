@@ -5,6 +5,11 @@ This package may be useful if you’d just like to encrypt parts of
 files or buffers, and to have encrypted output in the same line as
 other unencrypted text.
 
+I'm unsure about exactly how secure this OpenSSL setup is, so I am
+marking this package as deprecated. You can use it if you like,
+but I don't quite trust it enough for my own secrets. (I use the
+~pass~ command now.)
+
 ** Installation
 
 I've only tested this in Emacs 24, on a *Nix system. You will also
